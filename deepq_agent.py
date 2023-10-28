@@ -6,7 +6,7 @@ import numpy as np
 
 
 class DeepQNetwork(nn.Module):
-    def __int__(self, lr, input_dims, fc1_dims, fc2_dims, n_actions):
+    def __init__(self, lr, input_dims, fc1_dims, fc2_dims, n_actions):
         super(DeepQNetwork, self).__init__()
         self.input_dims = input_dims
         self.fc1_dims = fc1_dims
@@ -29,7 +29,7 @@ class DeepQNetwork(nn.Module):
 
 
 class Agent():
-    def __int__(self, gamma, epsilon, lr, input_dims, batch_size, n_actions,
+    def __init__(self, gamma, epsilon, lr, input_dims, batch_size, n_actions,
                 max_mem_size=100000, eps_end=0.01, eps_dec=5e-4):
         self.gamma = gamma
         self.epsilon = epsilon
@@ -48,7 +48,7 @@ class Agent():
                                          dtype=np.float32)
         self.action_memory = np.zeros(self.mem_size, dtype=np.int32)
         self.reward_memory = np.zeros(self.mem_size, dtype=np.float32)
-        self.terminal_memory = np.zeros(self.mem_size, dtype=np.bool)
+        self.terminal_memory = np.zeros(self.mem_size, dtype=np.bool8)
 
     def store_transition(self, state, action, reward, state_, done):
         index = self.mem_cntr % self.mem_size
@@ -68,7 +68,7 @@ class Agent():
             action = np.random.choice(self.action_space)
         return action
 
-    def lern(self):
+    def learn(self):
         if self.mem_cntr < self.batch_size:
             return
 
